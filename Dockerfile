@@ -10,7 +10,7 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
 RUN apt -y update && apt -y upgrade && \
-		apt install -y --no-install-recommends \
+        apt install -y --no-install-recommends \
         build-essential \
         git \
         less \
@@ -32,9 +32,9 @@ RUN apt -y update && apt -y upgrade && \
         python3-pip \
         unzip \
         vim \
-		wget && \
-		apt -y clean && \
-	rm -rf /var/lib/apt/lists/*
+        wget && \
+        apt -y clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # CMake
 WORKDIR /home
@@ -53,19 +53,19 @@ WORKDIR /home
 RUN wget -O - https://github.com/opencv/opencv/archive/4.5.0.tar.gz | tar zxvf -
 WORKDIR /home/opencv-4.5.0/build
 RUN cmake -D WITH_CUDA=OFF \
-		  -D BUILD_DOCS=OFF \
-		  -D BUILD_TESTS=OFF .. && \
-	make -j $(nproc) && \
-	make install && \
-	rm -r /home/opencv-4.5.0
+          -D BUILD_DOCS=OFF \
+          -D BUILD_TESTS=OFF .. && \
+    make -j $(nproc) && \
+    make install && \
+    rm -r /home/opencv-4.5.0
 
 # Google Test
 WORKDIR /home
 RUN wget -O - https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar zxvf -
 WORKDIR /home/googletest-release-1.10.0/build
 RUN cmake .. && \
-	make install && \
-	rm -r /home/googletest-release-1.10.0
+    make install && \
+    rm -r /home/googletest-release-1.10.0
 
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install setuptools==60.8.1
