@@ -68,7 +68,7 @@ RUN cmake .. && \
     rm -r /home/googletest-release-1.10.0
 
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install setuptools==60.8.1
+RUN python3 -m pip install setuptools==59.6.0
 
 RUN python3 -m pip install hydra-core==1.1.1
 RUN python3 -m pip install optuna==2.10.0
@@ -76,9 +76,9 @@ RUN python3 -m pip install pandas==1.1.5
 RUN python3 -m pip install tqdm==4.62.3
 
 RUN python3 -m pip install mlflow==1.23.1
-RUN python3 -m pip install boto3==1.20.51
+RUN python3 -m pip install boto3==1.20.52
 
-RUN python3 -m pip install matplotlib==3.5.1
+RUN python3 -m pip install matplotlib==3.3.4
 RUN python3 -m pip install seaborn==0.11.2
 
 WORKDIR /home
