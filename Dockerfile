@@ -1,6 +1,6 @@
-ARG cuda_version=10.2
-ARG cudnn_version=7
-ARG ubuntu=18.04
+ARG cuda_version=11.6.2
+ARG cudnn_version=8
+ARG ubuntu=20.04
 FROM nvidia/cuda:${cuda_version}-cudnn${cudnn_version}-devel-ubuntu${ubuntu}
 
 LABEL maintainer "Tomoya Okazaki"
@@ -38,26 +38,26 @@ RUN apt -y update && apt -y upgrade && \
 
 # CMake
 WORKDIR /home
-RUN wget -O - https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2.tar.gz | tar zxvf -
-WORKDIR /home/cmake-3.22.2/
-RUN ./bootstrap && make && make install && rm -r /home/cmake-3.22.2
+RUN wget -O - https://github.com/Kitware/CMake/releases/download/v3.23.2/cmake-3.23.2.tar.gz | tar zxvf -
+WORKDIR /home/cmake-3.23.2/
+RUN ./bootstrap && make && make install && rm -r /home/cmake-3.23.2
 
 # LibTorch
 WORKDIR /home
-RUN wget https://download.pytorch.org/libtorch/cu102/libtorch-cxx11-abi-shared-with-deps-1.7.1.zip
-RUN unzip libtorch-cxx11-abi-shared-with-deps-1.7.1.zip
-RUN rm libtorch-cxx11-abi-shared-with-deps-1.7.1.zip
+RUN wget https://download.pytorch.org/libtorch/cu113/libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcu113.zip
+RUN unzip libtorch-cxx11-abi-shared-with-deps-1.11.0+cu113.zip
+RUN rm libtorch-cxx11-abi-shared-with-deps-1.11.0+cu113.zip
 
 # OpenCV
 WORKDIR /home
-RUN wget -O - https://github.com/opencv/opencv/archive/4.5.0.tar.gz | tar zxvf -
-WORKDIR /home/opencv-4.5.0/build
+RUN wget -O - https://github.com/opencv/opencv/archive/4.6.0.tar.gz | tar zxvf -
+WORKDIR /home/opencv-4.6.0/build
 RUN cmake -D WITH_CUDA=OFF \
           -D BUILD_DOCS=OFF \
           -D BUILD_TESTS=OFF .. && \
     make -j $(nproc) && \
     make install && \
-    rm -r /home/opencv-4.5.0
+    rm -r /home/opencv-4.6.0
 
 # Google Test
 WORKDIR /home
@@ -68,17 +68,19 @@ RUN cmake .. && \
     rm -r /home/googletest-release-1.10.0
 
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install setuptools==59.6.0
+RUN python3 -m pip install setuptools==62.6.0
 
-RUN python3 -m pip install hydra-core==1.1.1
-RUN python3 -m pip install optuna==2.10.0
-RUN python3 -m pip install pandas==1.1.5
-RUN python3 -m pip install tqdm==4.62.3
+RUN python3 -m pip install hydra-core==1.2.0
+RUN python3 -m pip install optuna==2.10.1
+RUN python3 -m pip install hydra-optuna-sweeper==1.2.0
+RUN python3 -m pip install pandas==1.4.3
+RUN python3 -m pip install scikit-learn==1.1.1
+RUN python3 -m pip install tqdm==4.64.0
 
-RUN python3 -m pip install mlflow==1.23.1
-RUN python3 -m pip install boto3==1.20.52
+RUN python3 -m pip install mlflow==1.26.1
+RUN python3 -m pip install boto3==1.24.16
 
-RUN python3 -m pip install matplotlib==3.3.4
+RUN python3 -m pip install matplotlib==3.5.2
 RUN python3 -m pip install seaborn==0.11.2
 
 WORKDIR /home
